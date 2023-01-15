@@ -192,12 +192,12 @@ const Home = (props) => {
     console.log(isPR);
     if (isPR == false) {
       const welcomeboard = await welcomenft.welcome(client_address);
-      const _money = (await welcomeboard.money) / 1;
+      const _money = (await welcomeboard.money) / 1000000000000000000;
       console.log(_money);
       setmoney(_money);
     } else if (isPR == true) {
       const welcomeboard = await welcomenft.welcome_PR(client_address);
-      const _money = (await welcomeboard.money) / 1;
+      const _money = (await welcomeboard.money) / 1000000000000000000;
       console.log(_money);
       setmoney(_money);
     }
