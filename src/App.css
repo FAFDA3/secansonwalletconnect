@@ -1,0 +1,31 @@
+
+*{
+  text-align: center;
+}
+.Wallet_connect_card{
+  max-width: 400px;
+  background-color: #1c1b1b;
+  padding: 20px;
+  border-radius: 12px;
+  margin: auto;
+  margin-top:35vh;
+  font-size: 28px;
+}
+
+.wallet_button{
+  width: 100%;
+  background-color: red;
+}
+.title{
+  margin: 0px;
+  margin-bottom: 20px;
+}
+.change_network{
+  margin-top: 30px;
+}
+
+body{
+  background-color: rgb(222, 152, 135);
+  color: #fff;
+  justify-content: space-between;
+}
