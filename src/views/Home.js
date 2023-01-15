@@ -576,7 +576,7 @@ const Home = (props) => {
 
 
             {nft_cost && (
-              <div className="whitetext">NFT COST: {nft_cost} matic</div>
+              <div className="whitetext">NFT COST: {nft_cost} ETH</div>
             )}
 
             <button className="desktop9-button2 button">HOME </button>
