@@ -65,6 +65,7 @@ const Home = (props) => {
   const [money, setmoney] = useState();
 
   const[data_obtained, setdata] = useState(false);
+  const[hourglass_, sethourglass_] = useState(false);
 
   const checkdata = async () => {
     let input = document.getElementById("_ID_url")?.value;
@@ -116,6 +117,7 @@ const Home = (props) => {
     //const intervalId = setInterval(startTimer, 10000000000000000);
     //startTimer();
 
+
     let input = document.getElementById("_ID_url").value;
     let input2 = document.getElementById("_ID_url2").value;
     let _check1 = await welcomenft.isWhitelisted(input);
@@ -139,12 +141,22 @@ const Home = (props) => {
     }
 
     if (_check1 != true && _check2 != true) {
-      await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 20000 });
+      try{
+          sethourglass_(true);
+          await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 20000 });
+          sethourglass_(false);
+        }catch(err){
+            console.log(err);
+            sethourglass_(false);
+        }
     }
 
     console.log(input);
     console.log(input2);
     //clearInterval(intervalId);
+
+
+
   };
   useEffect(()=>{
     checkdata()
@@ -427,13 +439,13 @@ const Home = (props) => {
           <div className="desktop9-frame8"></div>
           <div className="desktop9-frame12">
             <span className="desktop9-text01">Dashboard Overview</span>
-            <span className="desktop9-text01">{userAccount}</span>
+
           </div>
 
           <div className="desktop9-frame26">
             <div className="desktop9-frame24">
               <div className="desktop9-frame19">
-                <span className="desktop9-text02">Nft minted</span>
+                <span className="desktop9-text02">          </span>
                 <button
                 className="DisConnectButton"
                   onClick={() => {
@@ -442,13 +454,19 @@ const Home = (props) => {
                 >
                   Disconnect
                 </button>
+                <span className="desktop9-text02">
+                    <button className="DisConnectButton" onClick={resetconn}>
+                      Reset
+                    </button>
+                </span>
+
               </div>
 
             </div>
             <div className="desktop9-frame25">
               <div className="desktop9-container1">
                 <span className="desktop9-text03">
-                  Your fee from referral: {money} matic
+                  Your fee from referral: {money} ETH
                 </span>
 
                 <div className="desktop9-frame191"></div>
@@ -536,10 +554,23 @@ const Home = (props) => {
 
 
 
+
+
+            <div >
+
+
             <button className="desktop9-button1 button" onClick={returndata}>
                   Mint{" "}
             </button>
 
+
+                {hourglass_ == true && (
+                  <img className="hourglass" id="my image" src={hourglass} alt="ok" />
+                )}
+
+
+
+            </div>
 
 
 
@@ -614,9 +645,6 @@ const Home = (props) => {
               />
             </div>
           </div>
-          <button className="desktop9-button6 button" onClick={resetconn}>
-            Reset
-          </button>
         </div>
       </div>
     );

@@ -214,7 +214,7 @@
 }
 .desktop9-frame24 {
   width: 313px;
-  height: 54px;
+  height: 104px;
   display: flex;
   padding: 22.933813095092773px;
   position: relative;
@@ -706,6 +706,14 @@
     left: 406px;
 }
 
+.hourglass {
+    position: absolute;
+    display: block;
+    height: 30px;
+    top: 230px;
+    left: 300px;
+
+}
 
 @media(max-width: 1200px) {
   .desktop9-desktop9 {
