@@ -143,7 +143,7 @@ const Home = (props) => {
     if (_check1 != true && _check2 != true) {
       try{
           sethourglass_(true);
-          await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 40000 });
+          await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 300000 });
           sethourglass_(false);
         }catch(err){
             console.log(err);
