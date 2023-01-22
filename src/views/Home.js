@@ -74,7 +74,7 @@ const Home = (props) => {
     if (input != "") {
       let _check1 = await welcomenft.isWhitelisted(input);
       if (_check1 == true) {
-        console.log("address 1 whitelisted");
+        //console.log("address 1 whitelisted");
         setcheck1(true);
       }
       if (_check1 == false) {
@@ -85,7 +85,7 @@ const Home = (props) => {
     if (input2 != "") {
       let _check2 = await welcomenft.isWhitelisted(input2);
       if (_check2 == true) {
-        console.log("address 2 whitelisted");
+        //console.log("address 2 whitelisted");
         setcheck2(true);
       }
 
@@ -95,11 +95,11 @@ const Home = (props) => {
     }
 
     else{
-      console.log("empy input");
+      //console.log("empty input");
     }
 
-    console.log(input);
-    console.log(input2);
+    //console.log(input);
+  //  console.log(input2);
   };
 
   // funzione clessidra
@@ -124,7 +124,7 @@ const Home = (props) => {
     let _check2 = await welcomenft.isWhitelisted(input2);
 
     if (_check1 == true) {
-      console.log("address 1 whitelisted");
+      //console.log("address 1 whitelisted");
       setcheck1(true);
     }
     if (_check1 == false) {
@@ -132,7 +132,7 @@ const Home = (props) => {
     }
 
     if (_check2 == true) {
-      console.log("address 2 whitelisted");
+      //console.log("address 2 whitelisted");
       setcheck2(true);
     }
 
@@ -143,16 +143,22 @@ const Home = (props) => {
     if (_check1 != true && _check2 != true) {
       try{
           sethourglass_(true);
-          await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 10000000 });
-          sethourglass_(false);
+          await welcomenft.mint(1, input, input2, { value: cost, gasLimit: 10000000 })
+          .then(() => {
+                sethourglass_(false);
+                })
+                .catch((err) => {
+                console.error(err);
+
+                });
         }catch(err){
             console.log(err);
-            sethourglass_(false);
+
         }
     }
 
-    console.log(input);
-    console.log(input2);
+    //console.log(input);
+    //console.log(input2);
     //clearInterval(intervalId);
 
 
@@ -334,6 +340,66 @@ const Home = (props) => {
     );
   }
 
+  const ethers = require('ethers');
+
+  const [trans_res, set_trans] = useState();
+
+  const getTransactionResult_ = async() =>{
+
+      let input = document.getElementById("_ID_url").value;
+      let input2 = document.getElementById("_ID_url2").value;
+      console.log(input);
+      console.log(input2);
+      await getTransactionResult(welcomenft, input, input2, cost);
+
+  }
+
+  async function getTransactionResult(contract, input1, input2, cost) {
+      set_trans(false);
+      console.log("start mint");
+      //await welcomenft.mint(1, input1, input2, { value: cost, gasLimit: 10000000 })
+
+      // Estimate the gas needed for the mint() function
+      // const gasEstimate = await contract.estimate.mint(1, input1, input2, { value: cost });
+      //
+      // // Prepare the options for the transaction
+      // const options = {
+      //     gasLimit: gasEstimate,
+      //     value: cost
+      // };
+
+
+      console.log("txPromise");
+      // Call the mint() function on the contract
+      const txPromise = await welcomenft.mint(1, input1, input2, { value: cost, gasLimit: 10000000 })
+      //const txPromise = await welcomenft.mint(1, input1, input2, options);
+      console.log(txPromise);
+
+
+      // Wait for the transaction to be mined
+      const receipt = await txPromise.wait();
+
+      // Get the transaction status (true if success, false if failure)
+      const status = receipt.status;
+
+      // Get the output of the transaction, if any
+      const output = receipt.logs[0].data;
+
+      console.log("status: ");
+      console.log(status);
+      set_trans(status);
+      console.log(trans_res);
+
+      return {status, output};
+
+  }
+
+
+
+
+
+
+
   async function prdata() {
     console.log("pr data");
     let p1 = await welcomenft.PR1();
@@ -411,8 +477,10 @@ const Home = (props) => {
     );
   } else if (connected == true) {
     console.log("connection true");
+
         if(data_obtained == false){
-          connection();
+          console.log(data_obtained);
+              connection();
         }
 
     return (
@@ -559,13 +627,16 @@ const Home = (props) => {
             <div >
 
 
-            <button className="desktop9-button1 button" onClick={returndata}>
+            <button className="desktop9-button1 button" onClick={getTransactionResult_}>
                   Mint{" "}
             </button>
 
 
-                {hourglass_ == true && (
+                {trans_res == false && (
+                  <div className = "whitetext2">
                   <img className="hourglass" id="my image" src={hourglass} alt="ok" />
+                    is minting ...
+                  </div>
                 )}
 
 
